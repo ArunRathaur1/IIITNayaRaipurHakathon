@@ -7,6 +7,7 @@ const farmerRoutes = require('./routes/farmerRoutes');
 const sellerRoutes = require('./routes/sellerRoute');
 const landRoutes=require('./routes/landRoutes');
 const airoute=require("./routes/airoutes");
+const emailroute=require("./routes/emailRoutes");
 const app = express();
 
 // Middleware
@@ -25,6 +26,7 @@ mongoose.connect(
 app.use('/api/farmers', farmerRoutes);
 app.use('/api/sellers', sellerRoutes);
 app.use('/api/land',landRoutes);
+app.use("/api/email", emailroute);
 app.use("/api/ai", airoute);
 
 const PORT = process.env.PORT || 5000;
