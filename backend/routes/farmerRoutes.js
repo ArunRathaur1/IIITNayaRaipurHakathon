@@ -1,24 +1,71 @@
 const express = require('express');
 const Farmer = require('../models/Farmer');
-
+const axios = require('axios'); // Import axios
 const router = express.Router();
 
 // ✅ Create a new farmer
-router.post('/', async (req, res) => {
-    try {
-        const { name, area, landArea, phone, email, selectedCrop = null } = req.body;
+router.post("/", async (req, res) => {
+  try {
+    const {
+      name,
+      area,
+      landArea,
+      phone,
+      email,
+      selectedCrop = null,
+    } = req.body;
 
-        if (!name || !area || !landArea || !phone || !email) {
-            return res.status(400).json({ message: 'All fields are required (name, area, landArea, phone, email)' });
-        }
-
-        const newFarmer = new Farmer({ name, area, landArea, phone, email, selectedCrop });
-        await newFarmer.save();
-        res.status(201).json({ message: 'Farmer added successfully!', farmer: newFarmer });
-
-    } catch (error) {
-        res.status(500).json({ message: 'Error adding farmer', error: error.message });
+    if (!name || !area || !landArea || !phone || !email) {
+      return res
+        .status(400)
+        .json({
+          message:
+            "All fields are required (name, area, landArea, phone, email)",
+        });
     }
+
+    let cropData = null;
+
+    // Fetch crop data if selectedCrop is provided
+    if (selectedCrop) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/ai/crop_data",
+          {
+            crop: selectedCrop,
+          }
+        );
+
+        if (response.data.success) {
+          cropData = response.data.data;
+        }
+      } catch (error) {
+        console.error("Error fetching crop data:", error.message);
+        return res
+          .status(500)
+          .json({ message: "Failed to fetch crop data", error: error.message });
+      }
+    }
+
+    const newFarmer = new Farmer({
+      name,
+      area,
+      landArea,
+      phone,
+      email,
+      selectedCrop,
+      cropData,
+    });
+    await newFarmer.save();
+
+    res
+      .status(201)
+      .json({ message: "Farmer added successfully!", farmer: newFarmer });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error adding farmer", error: error.message });
+  }
 });
 
 router.get('/phone/:phone', async (req, res) => {
@@ -32,32 +79,55 @@ router.get('/phone/:phone', async (req, res) => {
 });
 
 // ✅ Update selected crop for a farmer
-router.patch('/:id/crop', async (req, res) => {
-    try {
-        const { selectedCrop } = req.body;
-        const { id } = req.params;
+router.post("/:id/crop", async (req, res) => {
+  try {
+    const { selectedCrop } = req.body;
+    const { id } = req.params;
 
-        if (!selectedCrop) {
-            return res.status(400).json({ message: 'Selected crop is required' });
-        }
-
-        const farmer = await Farmer.findById(id);
-        if (!farmer) {
-            return res.status(404).json({ message: 'Farmer not found' });
-        }
-
-        // Update crop and date
-        farmer.selectedCrop = selectedCrop;
-        farmer.date = new Date(); // Set date to current update time
-
-        await farmer.save();
-
-        res.status(200).json({ message: 'Crop updated successfully', farmer });
-
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating crop', error: error.message });
+    if (!selectedCrop) {
+      return res.status(400).json({ message: "Selected crop is required" });
     }
+
+    const farmer = await Farmer.findById(id);
+    if (!farmer) {
+      return res.status(404).json({ message: "Farmer not found" });
+    }
+
+    // Fetch crop data for the updated selectedCrop
+    let cropData = null;
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/ai/crop_data",
+        {
+          crop: selectedCrop,
+        }
+      );
+
+      if (response.data.success) {
+        cropData = response.data.data;
+      }
+    } catch (error) {
+      console.error("Error fetching crop data:", error.message);
+      return res
+        .status(500)
+        .json({ message: "Failed to fetch crop data", error: error.message });
+    }
+
+    // Update farmer details
+    farmer.selectedCrop = selectedCrop;
+    farmer.cropData = cropData; // Store the updated crop data
+    farmer.date = new Date(); // Set update timestamp
+
+    await farmer.save();
+
+    res.status(200).json({ message: "Crop updated successfully", farmer });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating crop", error: error.message });
+  }
 });
+
 
 
 

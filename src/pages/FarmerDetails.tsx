@@ -48,36 +48,56 @@ const FarmerDetails: React.FC = () => {
     const [updating, setUpdating] = useState<boolean>(false);
     const [cropInfo, setCropInfo] = useState<CropData | null>(null);
     const [cropLoading, setCropLoading] = useState<boolean>(false);
+    const handleUpdateCrop = async () => {
+      if (!newCrop.trim() || !farmer) return;
+      try {
+        setUpdating(true);
+        const response = await axios.post(
+          `http://localhost:5000/api/farmers/${farmer._id}/crop`,
+          {
+            selectedCrop: newCrop,
+          }
+        );
+        setFarmer(response.data.farmer);
 
+        // Fetch data for the new crop
+        fetchCropData(newCrop);
+
+        setNewCrop("");
+      } catch (error) {
+        console.error("Error updating crop", error);
+      } finally {
+        setUpdating(false);
+      }
+    };
     useEffect(() => {
-        const fetchFarmer = async () => {
-            try {
-                const response = await axios.get(`http://localhost:5000/api/farmers/phone/${phone}`);
-                setFarmer(response.data);
-                
-                // If farmer has a selected crop, fetch crop data
-                if (response.data.selectedCrop) {
-                    fetchCropData(response.data.selectedCrop);
-                }
-            } catch (err: unknown) {
-                setError("Farmer not found");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchFarmer();
-    }, [phone]);
+      const fetchFarmer = async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/farmers/phone/${phone}`
+          );
+          setFarmer(response.data);
 
-    const fetchCropData = async (cropName: string) => {
+          // If farmer has a selected crop, fetch crop data
+          if (response.data.selectedCrop) {
+            fetchCropData(response.data);
+          }
+        } catch (err: unknown) {
+          setError("Farmer not found");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchFarmer();
+    }, [phone, handleUpdateCrop]);
+
+    const fetchCropData = async (data) => {
         setCropLoading(true);
         try {
-            const response = await axios.post('http://localhost:5000/api/ai/crop_data', {
-                crop: cropName.toLowerCase()
-            });
-            if (response.data.success) {
-                setCropInfo(response.data.data);
+            if (data.cropData) {
+              setCropInfo(data.cropData);
             } else {
-                console.error("Failed to fetch crop data");
+              console.error("Failed to fetch crop data");
             }
         } catch (err) {
             console.error("Error fetching crop data:", err);
@@ -86,25 +106,7 @@ const FarmerDetails: React.FC = () => {
         }
     };
 
-    const handleUpdateCrop = async () => {
-        if (!newCrop.trim() || !farmer) return;
-        try {
-            setUpdating(true);
-            const response = await axios.patch(`http://localhost:5000/api/farmers/${farmer._id}/crop`, {
-                selectedCrop: newCrop
-            });
-            setFarmer(response.data.farmer);
-            
-            // Fetch data for the new crop
-            fetchCropData(newCrop);
-            
-            setNewCrop("");
-        } catch (error) {
-            console.error("Error updating crop", error);
-        } finally {
-            setUpdating(false);
-        }
-    };
+    
 
     if (loading) return (
         <Layout>
