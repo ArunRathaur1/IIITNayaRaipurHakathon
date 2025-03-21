@@ -1,0 +1,225 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" 
+    integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" 
+    crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #data-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .data-box {
+            width: 150px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .data-box h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .data-box p {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Real-Time Sensor Data</h1>
+    <div id="data-container">
+        <div class="data-box">
+            <h2>Temperature</h2>
+            <p id="temperature">-- °C</p>
+        </div>
+        <div class="data-box">
+            <h2>Humidity</h2>
+            <p id="humidity">-- %</p>
+        </div>
+        <div class="data-box">
+            <h2>Soil Moisture</h2>
+            <p id="soilMoisture">-- %</p>
+        </div>
+    </div>
+
+    <script>
+        var socket = io();
+
+        socket.on('sensorData', function(data) {
+            document.getElementById('temperature').innerText = data.temperature + " °C";
+            document.getElementById('humidity').innerText = data.humidity + " %";
+            document.getElementById('soilMoisture').innerText = data.soilMoisture + " %";
+        });
+    </script>
+
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+    <script src="/socket.io/socket.io.js"></script> 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #data-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .data-box {
+            width: 150px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .data-box h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .data-box p {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Real-Time Sensor Data</h1>
+    <div id="data-container">
+        <div class="data-box">
+            <h2>Temperature</h2>
+            <p id="temperature">-- °C</p>
+        </div>
+        <div class="data-box">
+            <h2>Humidity</h2>
+            <p id="humidity">-- %</p>
+        </div>
+        <div class="data-box">
+            <h2>Soil Moisture</h2>
+            <p id="soilMoisture">-- %</p>
+        </div>
+    </div>
+
+    <script>
+        var socket = io();
+
+        socket.on('connect', function() {
+            console.log('Connected to server');
+        });
+
+        socket.on('sensorData', function(data) {
+            console.log("Received data: ", data);
+            document.getElementById('temperature').innerText = data.temperature + " °C";
+            document.getElementById('humidity').innerText = data.humidity + " %";
+            document.getElementById('soilMoisture').innerText = data.soilMoisture + " %";
+        });
+
+        socket.on('disconnect', function() {
+            console.log('Disconnected from server');
+        });
+    </script>
+
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Sensor Data</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { display: flex; justify-content: center; gap: 20px; }
+        .card { padding: 20px; border-radius: 10px; background: #f4f4f4; width: 150px; }
+        h2 { margin-bottom: 5px; }
+        p { font-size: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Sensor Data</h1>
+    <div class="container">
+        <div class="card">
+            <h2>Temperature</h2>
+            <p id="temperature">-- °C</p>
+        </div>
+        <div class="card">
+            <h2>Humidity</h2>
+            <p id="humidity">-- %</p>
+        </div>
+        <div class="card">
+            <h2>Soil Moisture</h2>
+            <p id="soilMoisture">-- %</p>
+        </div>
+    </div>
+
+    <script>
+        var socket = io();
+        
+        socket.on('connect', function() {
+            console.log('✅ Connected to server');
+        });
+
+        socket.on('sensorData', function(data) {
+            console.log("📡 Received sensor data:", data);
+
+            if (data.temperature !== undefined) {
+                document.getElementById('temperature').innerText = data.temperature + " °C";
+            }
+            if (data.humidity !== undefined) {
+                document.getElementById('humidity').innerText = data.humidity + " %";
+            }
+            if (data.soilMoisture !== undefined) {
+                document.getElementById('soilMoisture').innerText = data.soilMoisture + " %";
+            }
+        });
+
+        socket.on('disconnect', function() {
+            console.log('❌ Disconnected from server');
+        });
+    </script>
+</body>
+</html>
+
+
