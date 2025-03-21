@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./FarmerDetails.css";
@@ -17,26 +16,28 @@ interface Farmer {
     date: string;
 }
 
-const cropData: Record<string, any> = {
-    Rice: { 
-        duration: 120, 
-        waterSchedule: [{ day: 0, amount: "50mm" }, { day: 30, amount: "100mm" }, { day: 60, amount: "150mm" }],
-        fertilizerSchedule: [{ day: 15, type: "Urea", amount: "20kg/acre" }, { day: 45, type: "DAP", amount: "30kg/acre" }],
-        stages: [{ name: "Ploughing", day: 0 }, { name: "Sowing", day: 7 }, { name: "Irrigation", day: 30 }, { name: "Harvesting", day: 120 }]
-    },
-    Maize: { 
-        duration: 90, 
-        waterSchedule: [{ day: 0, amount: "40mm" }, { day: 20, amount: "80mm" }],
-        fertilizerSchedule: [{ day: 20, type: "Urea", amount: "25kg/acre" }],
-        stages: [{ name: "Ploughing", day: 0 }, { name: "Sowing", day: 10 }, { name: "Weeding", day: 30 }, { name: "Harvesting", day: 90 }]
-    },
-    Wheat: { 
-        duration: 140, 
-        waterSchedule: [{ day: 0, amount: "30mm" }, { day: 50, amount: "60mm" }],
-        fertilizerSchedule: [{ day: 25, type: "Urea", amount: "30kg/acre" }, { day: 75, type: "DAP", amount: "25kg/acre" }],
-        stages: [{ name: "Ploughing", day: 0 }, { name: "Sowing", day: 15 }, { name: "Irrigation", day: 50 }, { name: "Harvesting", day: 140 }]
-    }
-};
+interface CropSchedule {
+    day: number;
+    amount: string;
+}
+
+interface FertilizerSchedule {
+    day: number;
+    type: string;
+    amount: string;
+}
+
+interface CropStage {
+    name: string;
+    day: number;
+}
+
+interface CropData {
+    duration: string;
+    waterSchedule: CropSchedule[];
+    fertilizerSchedule: FertilizerSchedule[];
+    stages: CropStage[];
+}
 
 const FarmerDetails: React.FC = () => {
     const { phone } = useParams<{ phone: string }>();
@@ -45,12 +46,19 @@ const FarmerDetails: React.FC = () => {
     const [error, setError] = useState<string>("");
     const [newCrop, setNewCrop] = useState<string>("");
     const [updating, setUpdating] = useState<boolean>(false);
+    const [cropInfo, setCropInfo] = useState<CropData | null>(null);
+    const [cropLoading, setCropLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchFarmer = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/farmers/phone/${phone}`);
                 setFarmer(response.data);
+                
+                // If farmer has a selected crop, fetch crop data
+                if (response.data.selectedCrop) {
+                    fetchCropData(response.data.selectedCrop);
+                }
             } catch (err: unknown) {
                 setError("Farmer not found");
             } finally {
@@ -60,6 +68,24 @@ const FarmerDetails: React.FC = () => {
         fetchFarmer();
     }, [phone]);
 
+    const fetchCropData = async (cropName: string) => {
+        setCropLoading(true);
+        try {
+            const response = await axios.post('http://localhost:5000/api/ai/crop_data', {
+                crop: cropName.toLowerCase()
+            });
+            if (response.data.success) {
+                setCropInfo(response.data.data);
+            } else {
+                console.error("Failed to fetch crop data");
+            }
+        } catch (err) {
+            console.error("Error fetching crop data:", err);
+        } finally {
+            setCropLoading(false);
+        }
+    };
+
     const handleUpdateCrop = async () => {
         if (!newCrop.trim() || !farmer) return;
         try {
@@ -68,6 +94,10 @@ const FarmerDetails: React.FC = () => {
                 selectedCrop: newCrop
             });
             setFarmer(response.data.farmer);
+            
+            // Fetch data for the new crop
+            fetchCropData(newCrop);
+            
             setNewCrop("");
         } catch (error) {
             console.error("Error updating crop", error);
@@ -93,25 +123,34 @@ const FarmerDetails: React.FC = () => {
     );
 
     const formattedDate = farmer?.date ? new Date(farmer.date) : null;
-    const cropInfo = farmer?.selectedCrop ? cropData[farmer.selectedCrop] : null;
 
     // Generate daily tasks
     const dailyTasks: { date: Date; task: string }[] = [];
 
     if (cropInfo && formattedDate) {
-        [...cropInfo.stages, ...cropInfo.waterSchedule, ...cropInfo.fertilizerSchedule].forEach((event: any) => {
+        // Combine all events (stages, water schedule, fertilizer schedule)
+        const allEvents = [
+            ...cropInfo.stages.map(stage => ({ 
+                day: stage.day, 
+                description: `Stage: ${stage.name}` 
+            })),
+            ...cropInfo.waterSchedule.map(water => ({ 
+                day: water.day, 
+                description: `Watering: ${water.amount}` 
+            })),
+            ...cropInfo.fertilizerSchedule.map(fert => ({ 
+                day: fert.day, 
+                description: `Fertilizer: Apply ${fert.amount} of ${fert.type}` 
+            }))
+        ];
+
+        // Create tasks with dates
+        allEvents.forEach(event => {
             const eventDate = new Date(formattedDate.getTime() + event.day * 86400000);
-            let taskDescription = "";
-
-            if (event.name) {
-                taskDescription = `Stage: ${event.name}`;
-            } else if (event.amount && event.type) {
-                taskDescription = `Fertilizer: Apply ${event.amount} of ${event.type}`;
-            } else if (event.amount) {
-                taskDescription = `Watering: ${event.amount}`;
-            }
-
-            dailyTasks.push({ date: eventDate, task: taskDescription });
+            dailyTasks.push({ 
+                date: eventDate, 
+                task: event.description 
+            });
         });
 
         // Sort tasks by date
@@ -151,39 +190,78 @@ const FarmerDetails: React.FC = () => {
                             </button>
                         </div>
                         
-                        {cropInfo && formattedDate && (
-                            <div className="crop-details w-full mt-8">
-                                <h3 className="text-xl font-medium flex items-center gap-2">
-                                    <Sprout className="h-5 w-5" /> Crop Schedule: {farmer?.selectedCrop}
-                                </h3>
-                                
-                                <div className="mt-4">
-                                    <h4 className="text-lg font-medium flex items-center gap-2">
-                                        <Calendar className="h-4 w-4" /> Daily Tasks
-                                    </h4>
-                                    <ul className="list-disc pl-6 mt-2">
-                                        {dailyTasks.map((task, index) => (
-                                            <li key={index} className="py-1">
-                                                <span className="font-medium">{task.date.toLocaleDateString()}</span> - {task.task}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                
-                                <div className="mt-4">
-    <h4 className="text-lg font-medium flex items-center gap-2">
-        <Droplets className="h-4 w-4" /> Water Schedule
-    </h4>
-    <ul className="list-disc pl-6 mt-2">
-        {cropInfo.waterSchedule.map((water: any, index: number) => (
-            <li key={index} className="py-1">
-                {new Date(formattedDate.getTime() + water.day * 86400000).toLocaleDateString()}: {water.amount} of water
-            </li>
-        ))}
-    </ul>
-</div>
-
+                        {cropLoading ? (
+                            <div className="w-full mt-8 text-center">
+                                <div className="text-lg animate-pulse">Loading crop information...</div>
                             </div>
+                        ) : (
+                            cropInfo && formattedDate && (
+                                <div className="crop-details w-full mt-8">
+                                    <h3 className="text-xl font-medium flex items-center gap-2">
+                                        <Sprout className="h-5 w-5" /> Crop Schedule: {farmer?.selectedCrop}
+                                    </h3>
+                                    
+                                    <div className="mt-4">
+                                        <h4 className="text-lg font-medium flex items-center gap-2">
+                                            <Calendar className="h-4 w-4" /> Daily Tasks
+                                        </h4>
+                                        <div className="bg-white bg-opacity-20 rounded-lg p-4 mt-2">
+                                            <ul className="list-disc pl-6">
+                                                {dailyTasks.map((task, index) => (
+                                                    <li key={index} className="py-1">
+                                                        <span className="font-medium">{task.date.toLocaleDateString()}</span> - {task.task}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                                        <div className="bg-white bg-opacity-20 rounded-lg p-4">
+                                            <h4 className="text-lg font-medium flex items-center gap-2 mb-3">
+                                                <Droplets className="h-4 w-4" /> Water Schedule
+                                            </h4>
+                                            <ul className="list-disc pl-6">
+                                                {cropInfo.waterSchedule.map((water, index) => (
+                                                    <li key={index} className="py-1">
+                                                        <span className="font-medium">Day {water.day}:</span> {water.amount}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        
+                                        <div className="bg-white bg-opacity-20 rounded-lg p-4">
+                                            <h4 className="text-lg font-medium flex items-center gap-2 mb-3">
+                                                <Calendar className="h-4 w-4" /> Growth Stages
+                                            </h4>
+                                            <ul className="list-disc pl-6">
+                                                {cropInfo.stages.map((stage, index) => (
+                                                    <li key={index} className="py-1">
+                                                        <span className="font-medium">Day {stage.day}:</span> {stage.name}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        
+                                        <div className="bg-white bg-opacity-20 rounded-lg p-4 md:col-span-2">
+                                            <h4 className="text-lg font-medium flex items-center gap-2 mb-3">
+                                                <Calendar className="h-4 w-4" /> Fertilizer Schedule
+                                            </h4>
+                                            <ul className="list-disc pl-6">
+                                                {cropInfo.fertilizerSchedule.map((fert, index) => (
+                                                    <li key={index} className="py-1">
+                                                        <span className="font-medium">Day {fert.day}:</span> Apply {fert.amount} of {fert.type}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="mt-6 p-4 bg-blue-500 bg-opacity-20 rounded-lg">
+                                        <p className="font-medium">Total Crop Duration: {cropInfo.duration} days</p>
+                                    </div>
+                                </div>
+                            )
                         )}
                     </div>
                 </div>
