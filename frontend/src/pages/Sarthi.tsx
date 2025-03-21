@@ -70,7 +70,7 @@ const FloatingChatbot = () => {
       {/* Chat Window */}
       {isOpen && (
         <div className="fixed bottom-24 right-6 w-80 sm:w-96 bg-gray-800 rounded-lg shadow-lg flex flex-col z-40 overflow-hidden">
-          <div className="bg-blue-600 p-3 text-white font-bold flex justify-between items-center">
+          <div className="bg-green-600 p-3 text-white font-bold flex justify-between items-center">
             <span>Sarthi AI Assistant</span>
             <button onClick={toggleChat} className="text-white">
               <X size={18} />
@@ -90,7 +90,7 @@ const FloatingChatbot = () => {
                 key={index}
                 className={`p-3 my-1 rounded-lg max-w-xs ${
                   msg.sender === "user"
-                    ? "bg-blue-500 text-white self-end ml-auto"
+                    ? "bg-green-500 text-white self-end ml-auto"
                     : "bg-gray-600 text-white self-start"
                 }`}
               >
@@ -129,7 +129,7 @@ const FloatingChatbot = () => {
             />
             <button
               onClick={sendMessage}
-              className="px-3 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700 flex items-center justify-center"
+              className="px-3 py-2 bg-green-600 text-white rounded-r-md hover:bg-green-700 flex items-center justify-center"
             >
               <Send size={18} />
             </button>
