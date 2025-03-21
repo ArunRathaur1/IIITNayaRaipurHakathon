@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X, Cloud } from 'lucide-react';
 import { useState } from 'react';
 import { ThemeToggle } from "@/components/ThemeToggle";
-
+import image from './logo.png';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -33,8 +33,11 @@ const Navbar = () => {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <span className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">A</span>
-              <span className="font-semibold hidden md:inline-block">AgriHub</span>
+              <span className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
+                <img src={image} alt="Description" />              </span>
+              <span className="font-semibold hidden md:inline-block">
+                KrishiHub
+              </span>
             </Link>
           </div>
 
@@ -64,8 +67,17 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center space-x-2">
             <ThemeToggle />
-            <Button variant="ghost" size="icon" onClick={toggleMenu} className="ml-1">
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleMenu}
+              className="ml-1"
+            >
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </Button>
           </div>
         </div>
