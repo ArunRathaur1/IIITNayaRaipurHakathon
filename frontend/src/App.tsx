@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,8 +13,10 @@ import DirectMarket from "./pages/DirectMarket";
 import Landselling from "./pages/Landselling";
 import SellerManagement from "./pages/SellerManagement";
 import FarmerForm from "./pages/FarmerForm";
-import WeatherDashboard from './components/Wether/wether';
+import WeatherDashboard from "./components/Wether/wether";
 import FarmerDetails from "./pages/FarmerDetails";
+import Sarthi from "./pages/Sarthi";
+import FloatingChatbot from "./pages/Sarthi";
 
 const queryClient = new QueryClient();
 
@@ -34,12 +35,15 @@ const App = () => (
             <Route path="/direct-market" element={<DirectMarket />} />
             <Route path="/landselling" element={<Landselling />} />
             <Route path="/sellermanagement" element={<SellerManagement />} />
-            <Route path='/wether' element={<WeatherDashboard />} />
-            <Route path='/farmerform' element={<FarmerForm />} />
-            <Route path='/details/:phone' element={<FarmerDetails />} />
+            <Route path="/wether" element={<WeatherDashboard />} />
+            <Route path="/farmerform" element={<FarmerForm />} />
+            <Route path="/details/:phone" element={<FarmerDetails />} />
+            <Route path="/sarthi" element={<Sarthi />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        <FloatingChatbot />{" click"}
+        {/* Replace the simple button with the chatbot component */}
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>

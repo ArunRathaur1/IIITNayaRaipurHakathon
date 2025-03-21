@@ -9,7 +9,7 @@ import { LandListing } from "@/types/landselling";
 import { saveListings, getListings } from "@/services/landListingService";
 
 export default function Landselling() {
-  const [activeTab, setActiveTab] = useState("map");
+  const [activeTab, setActiveTab] = useState("list");
   const [listings, setListings] = useState<LandListing[]>([]);
   const { toast } = useToast();
   const [filters, setFilters] = useState({ price: "", area: "", location: "" });
