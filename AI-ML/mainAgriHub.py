@@ -107,7 +107,7 @@ with col2:
     predict_button = st.button("Predict")
 
 if test_image is not None and show_image:
-    st.image(test_image, caption="Uploaded Image", use_column_width=True)
+    st.image(test_image, caption="Uploaded Image")
 
 if test_image is not None and predict_button:
     with st.spinner("Analyzing image..."):
