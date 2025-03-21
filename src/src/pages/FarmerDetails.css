@@ -1,0 +1,120 @@
+
+/* FarmerDetails.css */
+.farmer-details-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: hsl(var(--card));
+    border-radius: var(--radius);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid hsl(var(--border));
+}
+
+h2 {
+    text-align: center;
+    color: hsl(var(--foreground));
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.farmer-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: hsl(var(--background));
+    border-radius: var(--radius);
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid hsl(var(--border));
+}
+
+.farmer-info p {
+    font-size: 16px;
+    margin: 8px 0;
+    color: hsl(var(--foreground));
+}
+
+strong {
+    color: hsl(var(--foreground));
+    font-weight: 600;
+}
+
+.crop-update {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.input-field {
+    padding: 10px;
+    width: 70%;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    font-size: 16px;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+}
+
+.update-button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: hsl(var(--primary) / 0.9);
+}
+
+.crop-details {
+    margin-top: 30px;
+    padding: 15px;
+    background: hsl(var(--muted));
+    border-radius: var(--radius);
+    border: 1px solid hsl(var(--border));
+}
+
+h3 {
+    color: hsl(var(--primary));
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+h4 {
+    margin-top: 15px;
+    color: hsl(var(--foreground));
+    font-weight: 500;
+}
+
+ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+li {
+    margin: 5px 0;
+    font-size: 15px;
+    color: hsl(var(--foreground));
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .farmer-details-container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+    
+    .input-field {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .update-button {
+        margin-left: 0;
+        width: 100%;
+    }
+}
