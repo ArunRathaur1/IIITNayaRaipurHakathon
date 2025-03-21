@@ -12,9 +12,11 @@ const FarmerForm: React.FC = () => {
     landArea: "",
     phone: "",
     email: "",
+    password:"",
     selectedCrop: "",
   });
   const [phoneInput, setPhoneInput] = useState("");
+  const [password,setPasswordInput]=useState("");
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +37,7 @@ const FarmerForm: React.FC = () => {
         landArea: "",
         phone: "",
         email: "",
+        password:"",
         selectedCrop: "",
       });
     } catch (error: any) {
@@ -54,18 +57,20 @@ const FarmerForm: React.FC = () => {
           <h2 className="text-2xl font-bold text-center mb-6 text-foreground">
             Farmer Portal
           </h2>
-          
+
           <div className="mb-8">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Register New Account</span>
+                <span className="bg-card px-2 text-muted-foreground">
+                  Register New Account
+                </span>
               </div>
             </div>
           </div>
-          
+
           <form onSubmit={handleRegister} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="relative">
@@ -82,7 +87,7 @@ const FarmerForm: React.FC = () => {
                   className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 />
               </div>
-              
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   <MapPin size={16} />
@@ -97,7 +102,7 @@ const FarmerForm: React.FC = () => {
                   className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 />
               </div>
-              
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   {/* <Farm size={16} /> */}
@@ -112,7 +117,7 @@ const FarmerForm: React.FC = () => {
                   className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 />
               </div>
-              
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   <Phone size={16} />
@@ -127,7 +132,7 @@ const FarmerForm: React.FC = () => {
                   className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 />
               </div>
-              
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   <Mail size={16} />
@@ -142,7 +147,21 @@ const FarmerForm: React.FC = () => {
                   className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 />
               </div>
-              
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
+                  <Mail size={16} />
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                />
+              </div>
+
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
                   <Sprout size={16} />
@@ -157,23 +176,25 @@ const FarmerForm: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <button className="w-full py-2 font-semibold rounded-md bg-primary hover:bg-primary/90 text-primary-foreground transition-colors">
               Register
             </button>
           </form>
-          
+
           <div className="mt-8 mb-4">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Already Registered?</span>
+                <span className="bg-card px-2 text-muted-foreground">
+                  Already Registered?
+                </span>
               </div>
             </div>
           </div>
-          
+
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
@@ -184,6 +205,19 @@ const FarmerForm: React.FC = () => {
                 placeholder="Enter Phone Number"
                 value={phoneInput}
                 onChange={(e) => setPhoneInput(e.target.value)}
+                required
+                className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary"
+              />
+            </div>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
+                <Phone size={16} />
+              </div>
+              <input
+                type="password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPasswordInput(e.target.value)}
                 required
                 className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary"
               />

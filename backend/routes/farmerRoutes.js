@@ -2,12 +2,17 @@ const express = require('express');
 const Farmer = require('../models/Farmer');
 const axios = require('axios'); // Import axios
 const router = express.Router();
+const bycrypt = require("bcryptjs");
+const jsonweb = require("jsonwebtoken");
+const serect_data = "This is very confidential";
 
 // ✅ Create a new farmer
+
 router.post("/", async (req, res) => {
   try {
     const {
       name,
+      password,
       area,
       landArea,
       phone,
@@ -15,14 +20,29 @@ router.post("/", async (req, res) => {
       selectedCrop = null,
     } = req.body;
 
-    if (!name || !area || !landArea || !phone || !email) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "All fields are required (name, area, landArea, phone, email)",
-        });
+    // Validation check
+    if (!name || !area || !landArea || !phone || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "All fields are required (name, area, landArea, phone, email, password)",
+      });
     }
+
+    // Check if farmer with this email or phone already exists
+    const existingFarmer = await Farmer.findOne({
+      $or: [{ email: email }, { phone: phone }],
+    });
+
+    if (existingFarmer) {
+      return res.status(400).json({
+        success: false,
+        message: "A farmer with this email or phone number already exists",
+      });
+    }
+
+    // Hash the password
+    const hashedPassword = await bycrypt.hash(password, 10);
 
     let cropData = null;
 
@@ -41,14 +61,18 @@ router.post("/", async (req, res) => {
         }
       } catch (error) {
         console.error("Error fetching crop data:", error.message);
-        return res
-          .status(500)
-          .json({ message: "Failed to fetch crop data", error: error.message });
+        return res.status(500).json({
+          success: false,
+          message: "Failed to fetch crop data",
+          error: error.message,
+        });
       }
     }
 
+    // Create new farmer with hashed password
     const newFarmer = new Farmer({
       name,
+      password: hashedPassword, // Store hashed password instead of plain text
       area,
       landArea,
       phone,
@@ -56,18 +80,42 @@ router.post("/", async (req, res) => {
       selectedCrop,
       cropData,
     });
+
     await newFarmer.save();
 
-    res
-      .status(201)
-      .json({ message: "Farmer added successfully!", farmer: newFarmer });
+    // Generate JWT token
+    const token = jsonweb.sign(
+      { id: newFarmer._id },
+      serect_data,
+      { expiresIn: "30d" } // Token expires in 30 days
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Farmer registered successfully!",
+      authToken: token,
+      farmer: {
+        _id: newFarmer._id,
+        name: newFarmer.name,
+        email: newFarmer.email,
+        phone: newFarmer.phone,
+        area: newFarmer.area,
+        landArea: newFarmer.landArea,
+        selectedCrop: newFarmer.selectedCrop,
+        // Not returning password hash for security
+      },
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error adding farmer", error: error.message });
+    console.error("Error registering farmer:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error registering farmer",
+      error: error.message,
+    });
   }
 });
 
+// More secure POST login route
 router.get('/phone/:phone', async (req, res) => {
     try {
         const farmer = await Farmer.findOne({ phone: req.params.phone });
@@ -76,7 +124,7 @@ router.get('/phone/:phone', async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: "Error fetching farmer details", error: err.message });
     }
-});
+  });
 
 // ✅ Update selected crop for a farmer
 router.post("/:id/crop", async (req, res) => {
