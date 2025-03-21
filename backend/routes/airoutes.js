@@ -91,6 +91,64 @@ router.post("/estimate", async (req, res) => {
   }
 });
 
+router.post("/crop_data", async (req, res) => {
+  try {
+    const { crop } = req.body;
+
+    if (!crop) {
+      return res.status(400).json({ error: "Crop name is required" });
+    }
+
+    // Constructing a prompt for AI
+    const prompt = `
+      Provide agricultural data for the crop: ${crop}.
+      Return only valid JSON format without markdown or explanations.
+      Follow this structure:
+      {
+        "duration": "{growth duration in days}",
+        "waterSchedule": [
+          { "day": {day_number}, "amount": "{water amount}" }
+        ],
+        "fertilizerSchedule": [
+          { "day": {day_number}, "type": "{fertilizer type}", "amount": "{amount}" }
+        ],
+        "stages": [
+          { "name": "{stage name}", "day": {day_number} }
+        ]
+      }
+    `;
+
+    const result = await model.generateContent(prompt);
+    let response = result.response.text();
+
+    // **Step 1: Remove AI Markdown Formatting (```json ... ```)**
+    response = response.replace(/```json|```/g, "").trim();
+
+    // **Step 2: Parse AI Response into JSON**
+    try {
+      response = JSON.parse(response);
+    } catch (error) {
+      console.error("Error parsing AI response:", error);
+      return res.status(500).json({
+        success: false,
+        error:
+          "Failed to parse AI response into JSON. AI may have returned unexpected formatting.",
+      });
+    }
+
+    // **Step 3: Send JSON Response**
+    res.json({ success: true, data: response });
+  } catch (error) {
+    console.error("Error generating crop data:", error);
+    res.status(500).json({
+      success: false,
+      error: "Failed to generate crop data",
+    });
+  }
+});
+
+
+
 
 
 module.exports = router;

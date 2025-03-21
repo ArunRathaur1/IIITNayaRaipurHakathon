@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// const farmerRoutes = require('./routes/farmerRoutes');
+const farmerRoutes = require('./routes/farmerRoutes');
 const sellerRoutes = require('./routes/sellerRoute');
 const landRoutes=require('./routes/landRoutes');
 const airoute=require("./routes/airoutes");
