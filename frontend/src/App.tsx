@@ -17,7 +17,6 @@ import WeatherDashboard from "./components/Wether/wether";
 import FarmerDetails from "./pages/FarmerDetails";
 import Sarthi from "./pages/Sarthi";
 import FloatingChatbot from "./pages/Sarthi";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -42,7 +41,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-        <FloatingChatbot />{" click"}
+        <FloatingChatbot />{"hello"}
         {/* Replace the simple button with the chatbot component */}
       </TooltipProvider>
     </QueryClientProvider>
