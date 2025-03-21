@@ -14,7 +14,7 @@ const Index = () => {
   useEffect(() => {
     // Welcome toast
     toast({
-      title: "Welcome to Agri-Aide Hub",
+      title: "Welcome to KrishiAide Hub",
       description: "Explore our AI tools designed specifically for farmers.",
       duration: 5000,
     });
