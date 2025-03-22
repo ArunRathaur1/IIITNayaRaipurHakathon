@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const MarketplaceItem = ({ 
   title, 
@@ -33,7 +34,8 @@ const MarketplaceItem = ({
   location, 
   seller, 
   image, 
-  category 
+  category,
+  way
 }: {
   title: string;
   price: string;
@@ -42,6 +44,7 @@ const MarketplaceItem = ({
   seller: string;
   image: string;
   category: string;
+  way: string;
 }) => {
   const { toast } = useToast();
 
@@ -57,6 +60,9 @@ const MarketplaceItem = ({
       <div className="relative h-48 bg-muted">
         <div className="absolute top-2 right-2">
           <Badge variant="secondary">{category}</Badge>
+        </div>
+        <div className="absolute top-2 left-2">
+          <Badge variant={way === "sell" ? "default" : "outline"}>{way === "sell" ? "For Sale" : "For Lease"}</Badge>
         </div>
         {image ? (
           <img src={image} alt={title} className="w-full h-full object-cover" />
@@ -80,6 +86,9 @@ const MarketplaceItem = ({
         <div className="text-sm">
           <span className="font-medium">Seller:</span> {seller}
         </div>
+        <div className="text-sm">
+          <span className="font-medium">Listing Type:</span> {way === "sell" ? "For Sale" : "For Lease"}
+        </div>
       </CardContent>
       <CardFooter>
         <Button onClick={handleContactSeller} className="w-full">Contact Seller</Button>
@@ -88,7 +97,7 @@ const MarketplaceItem = ({
   );
 };
 
-// Add a new component for the listing form
+// Enhanced listing form with way parameter
 const ListingForm = ({ onAddProduct, onClose }) => {
   const [newProduct, setNewProduct] = useState({
     title: '',
@@ -98,7 +107,8 @@ const ListingForm = ({ onAddProduct, onClose }) => {
     seller: '',
     image: '',
     category: '',
-    type: 'consumer' // Default to consumer market
+    type: 'consumer', // Default to consumer market
+    way: 'sell' // Default to sell
   });
 
   const { toast } = useToast();
@@ -229,6 +239,24 @@ const ListingForm = ({ onAddProduct, onClose }) => {
       </div>
       
       <div className="space-y-2">
+        <Label>Listing Type *</Label>
+        <RadioGroup 
+          value={newProduct.way} 
+          onValueChange={(value) => handleSelectChange('way', value)}
+          className="flex flex-row space-x-4"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="sell" id="sell" />
+            <Label htmlFor="sell">For Sale</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="lease" id="lease" />
+            <Label htmlFor="lease">For Lease</Label>
+          </div>
+        </RadioGroup>
+      </div>
+      
+      <div className="space-y-2">
         <Label htmlFor="image">Image URL (Optional)</Label>
         <Input
           id="image"
@@ -254,7 +282,7 @@ const DirectMarket = () => {
   const [showListingForm, setShowListingForm] = useState(false);
   const { toast } = useToast();
   
-  // Initialize state with existing items
+  // Initialize state with existing items, adding the way parameter
   const [consumerItems, setConsumerItems] = useState([
     {
       title: "Organic Rice",
@@ -265,6 +293,7 @@ const DirectMarket = () => {
       image:
         "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=800&auto=format&fit=crop&q=80",
       category: "Grains",
+      way: "sell",
     },
     {
       title: "Fresh Tomatoes",
@@ -275,6 +304,7 @@ const DirectMarket = () => {
       image:
         "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800&auto=format&fit=crop&q=80",
       category: "Vegetables",
+      way: "sell",
     },
     {
       title: "Alphonso Mangoes",
@@ -285,6 +315,7 @@ const DirectMarket = () => {
       image:
         "https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&auto=format&fit=crop&q=80",
       category: "Fruits",
+      way: "sell",
     },
     {
       title: "Organic Wheat",
@@ -295,6 +326,7 @@ const DirectMarket = () => {
       image:
         "https://5.imimg.com/data5/SELLER/Default/2023/5/310043896/VX/HT/NI/156804476/organic-wheat-for-food-industries.webp",
       category: "Grains",
+      way: "sell",
     },
   ]);
 
@@ -308,6 +340,7 @@ const DirectMarket = () => {
       image:
         "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?w=800&auto=format&fit=crop&q=80",
       category: "Fiber",
+      way: "sell",
     },
     {
       title: "Sugarcane for Processing",
@@ -318,6 +351,7 @@ const DirectMarket = () => {
       image:
         "https://www.saferack.com/wp-content/uploads/2022/11/sugarcane-being-harvested.webp",
       category: "Sugar Crops",
+      way: "sell",
     },
     {
       title: "Bulk Potatoes for Chips",
@@ -328,6 +362,7 @@ const DirectMarket = () => {
       image:
         "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=800&auto=format&fit=crop&q=80",
       category: "Vegetables",
+      way: "sell",
     },
     {
       title: "Soybean for Oil Extraction",
@@ -338,6 +373,7 @@ const DirectMarket = () => {
       image:
         "https://www.sunrisefoods.com/wp-content/uploads/2020/11/soybean-oil-2.jpg",
       category: "Oil Seeds",
+      way: "sell",
     },
   ]);
 
@@ -351,6 +387,7 @@ const DirectMarket = () => {
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVvn3Kj1qeTa8Y7iuJ8D52xVQOroCZCJCqbw&s",
       category: "Tractor",
+      way: "lease",
     },
     {
       title: "Transport Truck",
@@ -361,16 +398,18 @@ const DirectMarket = () => {
       image:
         "https://5.imimg.com/data5/SELLER/Default/2020/10/SD/WM/NW/115809247/full-load-service-500x500.jpg",
       category: "Truck",
+      way: "lease",
     },
     {
       title: "Combine Harvester",
-      price: "₹8,000/day",
+      price: "₹800,000",
       quantity: "2 available",
       location: "Indore, Madhya Pradesh",
       seller: "Central Farm Rentals",
       image:
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQQX8rltk_k5N7CUgcA7Bf5TtG_TIp0RJI4w&s",
       category: "Harvester",
+      way: "sell",
     },
     {
       title: "Plowing Machine",
@@ -380,8 +419,12 @@ const DirectMarket = () => {
       seller: "UP Farm Equipment",
       image: "https://i.ytimg.com/vi/uFXwdX9qQG4/maxresdefault.jpg",
       category: "Plowing Machine",
+      way: "lease",
     },
   ]);
+  
+  // Add state for way filter
+  const [wayFilter, setWayFilter] = useState('all');
   
   // Current active tab
   const [activeTab, setActiveTab] = useState('consumer');
@@ -401,30 +444,21 @@ const DirectMarket = () => {
     setActiveTab(product.type);
   };
 
-  // Filter items based on search term
-  const filteredConsumerItems = consumerItems.filter(
-    item => 
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.seller.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter items based on search term and way filter
+  const filterItems = (items) => {
+    return items.filter(
+      item => 
+        (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.seller.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (wayFilter === 'all' || item.way === wayFilter)
+    );
+  };
   
-  const filteredIndustryItems = industryItems.filter(
-    item => 
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.seller.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
-  const filteredRentalItems = rentalItems.filter(
-    item => 
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.seller.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredConsumerItems = filterItems(consumerItems);
+  const filteredIndustryItems = filterItems(industryItems);
+  const filteredRentalItems = filterItems(rentalItems);
 
   return (
     <Layout>
@@ -433,12 +467,12 @@ const DirectMarket = () => {
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h1 className="text-3xl font-bold tracking-tight">Direct Market Access</h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Connect directly with consumers and industries to sell your produce without intermediaries
+              Connect directly with consumers and industries to sell or lease your produce without intermediaries
             </p>
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <div className="w-full md:w-2/3 relative">
+            <div className="w-full md:w-1/2 relative">
               <Input
                 type="search"
                 placeholder="Search by product, location, or seller..."
@@ -453,7 +487,21 @@ const DirectMarket = () => {
               </div>
             </div>
             
-            {/* Replace button with Dialog */}
+            {/* Add way filter */}
+            <div className="w-full md:w-1/4">
+              <Select value={wayFilter} onValueChange={setWayFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Filter by listing type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Listings</SelectItem>
+                  <SelectItem value="sell">For Sale</SelectItem>
+                  <SelectItem value="lease">For Lease</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {/* List your product dialog */}
             <Dialog open={showListingForm} onOpenChange={setShowListingForm}>
               <DialogTrigger asChild>
                 <Button className="w-full md:w-auto">
@@ -504,7 +552,7 @@ const DirectMarket = () => {
                   <ShoppingBag className="h-12 w-12 mx-auto text-muted-foreground" />
                   <h3 className="mt-4 text-lg font-medium">No products found</h3>
                   <p className="text-muted-foreground">
-                    {searchTerm ? "Try adjusting your search terms" : "Be the first to list a product in this category"}
+                    {searchTerm || wayFilter !== 'all' ? "Try adjusting your search or filter" : "Be the first to list a product in this category"}
                   </p>
                 </div>
               )}
@@ -522,7 +570,7 @@ const DirectMarket = () => {
                   <Building className="h-12 w-12 mx-auto text-muted-foreground" />
                   <h3 className="mt-4 text-lg font-medium">No products found</h3>
                   <p className="text-muted-foreground">
-                    {searchTerm ? "Try adjusting your search terms" : "Be the first to list a product in this category"}
+                    {searchTerm || wayFilter !== 'all' ? "Try adjusting your search or filter" : "Be the first to list a product in this category"}
                   </p>
                 </div>
               )}
@@ -540,7 +588,7 @@ const DirectMarket = () => {
                   <Truck className="h-12 w-12 mx-auto text-muted-foreground" />
                   <h3 className="mt-4 text-lg font-medium">No products found</h3>
                   <p className="text-muted-foreground">
-                    {searchTerm ? "Try adjusting your search terms" : "Be the first to list a product in this category"}
+                    {searchTerm || wayFilter !== 'all' ? "Try adjusting your search or filter" : "Be the first to list a product in this category"}
                   </p>
                 </div>
               )}
