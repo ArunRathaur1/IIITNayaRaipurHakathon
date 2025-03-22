@@ -47,7 +47,7 @@ const SellerManagement: React.FC = () => {
 
   const addSeller = async () => {
     try {
-      await axios.post('http://localhost:5000/api/sellers/add', formData);
+      await axios.post('https://iiitnayaraipurhakathon.onrender.com/api/sellers/add', formData);
       fetchSellers();
       setAlertMessage('Seller successfully added!');
       setTimeout(() => setAlertMessage(null), 3000);

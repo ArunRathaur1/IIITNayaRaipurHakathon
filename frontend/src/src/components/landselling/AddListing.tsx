@@ -140,7 +140,7 @@ export default function AddListing({
   const saveListing = async (listing: Omit<LandListing, "id">) => {
     try {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:5000/api/land/", {
+      const response = await fetch("https://iiitnayaraipurhakathon.onrender.com/api/land/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

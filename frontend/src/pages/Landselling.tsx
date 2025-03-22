@@ -18,7 +18,7 @@ export default function Landselling() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/land"); // Update with your actual API URL
+        const response = await fetch("https://iiitnayaraipurhakathon.onrender.com/api/land"); // Update with your actual API URL
   
         if (!response.ok) {
           throw new Error("Failed to fetch listings");
@@ -49,6 +49,12 @@ export default function Landselling() {
   const handleTabChange = (value: string) => {
     setActiveTab(value);
   };
+
+  const handleContactSeller = (listing) => {
+    alert(`Contacting seller for ${listing.title}`);
+    // You can integrate an email feature, open a chat, or navigate to a contact page
+  };
+  
 
   // Handle adding a new listing (from the Add Listing tab)
   const handleAddListing = (newListingData: Omit<LandListing, "id">) => {
@@ -182,21 +188,31 @@ export default function Landselling() {
                     <th className="p-2 border">Area</th>
                     <th className="p-2 border">Location</th>
                     <th className="p-2 border">Created At</th>
+                    <th className="p-2 border">Contact</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredListings.map((listing) => (
-                    <tr key={listing.id} className="border-t">
-                      <td className="p-2 border">{listing.title}</td>
-                      <td className="p-2 border">₹{listing.price}</td>
-                      <td className="p-2 border">{listing.area} acres</td>
-                      <td className="p-2 border">{listing.location.join(", ")}</td>
-                      <td className="p-2 border">
-                        {new Date(listing.createdAt).toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+  {filteredListings.map((listing) => (
+    <tr key={listing.id} className="border-t">
+      <td className="p-2 border">{listing.title}</td>
+      <td className="p-2 border">₹{listing.price}</td>
+      <td className="p-2 border">{listing.area} acres</td>
+      <td className="p-2 border">{listing.location.join(", ")}</td>
+      <td className="p-2 border">
+        {new Date(listing.createdAt).toLocaleString()}
+      </td>
+      <td className="p-2 border">
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md transition duration-200"
+          onClick={() => handleContactSeller(listing)}
+        >
+          Contact Seller
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
               </table>
             </div>
           </TabsContent>

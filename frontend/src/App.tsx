@@ -42,6 +42,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
         <FloatingChatbot />
+        {/* Replace the simple button with the chatbot component */}
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>
