@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../components/Layout";
 import { User, MapPin,  Phone, Mail, Sprout } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 const FarmerForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -148,19 +150,19 @@ const FarmerForm: React.FC = () => {
                 />
               </div>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
-                  <Mail size={16} />
-                </div>
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                />
-              </div>
+  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
+    <FontAwesomeIcon icon={faLock} size="sm" />
+  </div>
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+    required
+    className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+  />
+</div>
 
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
@@ -210,18 +212,18 @@ const FarmerForm: React.FC = () => {
               />
             </div>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
-                <Phone size={16} />
-              </div>
-              <input
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                required
-                className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary"
-              />
-            </div>
+  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-muted-foreground">
+    <FontAwesomeIcon icon={faLock} size="sm" />
+  </div>
+  <input
+    type="password"
+    placeholder="Enter Password"
+    value={password}
+    onChange={(e) => setPasswordInput(e.target.value)}
+    required
+    className="w-full pl-10 pr-3 py-2 bg-background border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary"
+  />
+</div>
             <button className="w-full py-2 font-semibold rounded-md bg-secondary hover:bg-secondary/90 text-secondary-foreground transition-colors">
               View Details
             </button>
