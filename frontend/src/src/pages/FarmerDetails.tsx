@@ -49,7 +49,7 @@ const FarmerDetails: React.FC = () => {
     useEffect(() => {
         const fetchFarmer = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/farmers/phone/${phone}`);
+                const response = await axios.get(`https://iiitnayaraipurhakathon.onrender.com/api/farmers/phone/${phone}`);
                 setFarmer(response.data);
             } catch (err: unknown) {
                 setError("Farmer not found");
@@ -64,7 +64,7 @@ const FarmerDetails: React.FC = () => {
         if (!newCrop.trim() || !farmer) return;
         try {
             setUpdating(true);
-            const response = await axios.patch(`http://localhost:5000/api/farmers/${farmer._id}/crop`, {
+            const response = await axios.patch(`https://iiitnayaraipurhakathon.onrender.com/api/farmers/${farmer._id}/crop`, {
                 selectedCrop: newCrop
             });
             setFarmer(response.data.farmer);

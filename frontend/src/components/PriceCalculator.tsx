@@ -39,7 +39,7 @@ const SimpleForm = () => {
     setResult(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/ai/estimate", {
+      const response = await fetch("https://iiitnayaraipurhakathon.onrender.com/api/ai/estimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
