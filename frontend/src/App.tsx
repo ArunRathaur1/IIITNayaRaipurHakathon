@@ -41,8 +41,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-        <FloatingChatbot />{"hello"}
-        {/* Replace the simple button with the chatbot component */}
+        <FloatingChatbot />
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>
