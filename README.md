@@ -1,6 +1,6 @@
 # 🌱 Smart Agriculture Assistant
-# [PPT Explation].(https://drive.google.com/file/d/1m3oPIQcd-f0qBdJtkPF1WcKQbhMNGxeb/view?usp=sharing)
-# IOT Vidoe -> https://youtube.com/shorts/Lbkhppuiouk
+# [PPT Explaination].(https://drive.google.com/file/d/1m3oPIQcd-f0qBdJtkPF1WcKQbhMNGxeb/view?usp=sharing)
+# IOT Video -> https://youtube.com/shorts/Lbkhppuiouk
 ## 🚀 About the Project
 Our mission is to **empower farmers** with cutting-edge technology, guiding them from the **initial thought of farming** to **profit generation**. We integrate AI, IoT, and data-driven models to optimize every step of the agricultural process.
 
@@ -49,7 +49,9 @@ We welcome contributions from developers, AI researchers, and agricultural exper
 ## 📞 Contact
 For any queries or collaboration, reach out at:
 📧 Email: [arunrathaur92.6@gmail.com](arunrathaur92.6@gmail.com)
-
+📧 Email: [indreshkverma2004@gmail.com](indreshkverma2004@gmail.com)
+📧 Email: [sharmajayesh4241@gmail.com](sharmajayesh4241@gmail.com)
+📧 Email: [jkhushbu970@gmail.com](jkhushbu970@gmail.com)
 ---
 
 > **“Smart farming, better yields, sustainable future.”** 🌍
