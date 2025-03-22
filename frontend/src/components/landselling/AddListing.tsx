@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { LandListing, getGoogleMapsUrl } from "@/types/landselling";
@@ -35,6 +34,7 @@ export default function AddListing({
   const [isLocationMapInitialized, setIsLocationMapInitialized] =
     useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactNumber, setContactNumber] = useState(""); // New state for contact number
   const [newListing, setNewListing] = useState<Omit<LandListing, "id">>({
     title: "",
     description: "",
@@ -135,6 +135,7 @@ export default function AddListing({
       area: 0,
       location: [20.5937, 78.9629],
     });
+    setContactNumber(""); // Reset contact number
   };
 
   const saveListing = async (listing: Omit<LandListing, "id">) => {
@@ -168,6 +169,7 @@ export default function AddListing({
     if (!listing.description.trim()) return "Description is required";
     if (listing.price <= 0) return "Price must be greater than zero";
     if (listing.area <= 0) return "Area must be greater than zero";
+    if (!contactNumber.trim()) return "Contact number is required"; // Validate contact number
     return null;
   };
 
@@ -187,7 +189,7 @@ export default function AddListing({
     }
 
     try {
-      // First save to API
+      // First save to API (contact number is not included here)
       await saveListing(listingToAdd);
 
       // Then notify parent component
@@ -274,6 +276,20 @@ export default function AddListing({
               step="0.1"
             />
           </div>
+        </div>
+
+        {/* New Contact Number Field */}
+        <div className="space-y-2">
+          <Label htmlFor="contactNumber">Contact Number</Label>
+          <Input
+            id="contactNumber"
+            name="contactNumber"
+            type="tel"
+            placeholder="Enter your contact number"
+            value={contactNumber}
+            onChange={(e) => setContactNumber(e.target.value)}
+            required
+          />
         </div>
 
         <div className="pt-4">
