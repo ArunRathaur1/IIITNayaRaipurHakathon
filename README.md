@@ -1,5 +1,6 @@
 # 🌱 Smart Agriculture Assistant
 # PPT Explation -> https://drive.google.com/file/d/1m3oPIQcd-f0qBdJtkPF1WcKQbhMNGxeb/view?usp=sharing
+# IOT Vidoe -> https://youtube.com/shorts/Lbkhppuiouk
 ## 🚀 About the Project
 Our mission is to **empower farmers** with cutting-edge technology, guiding them from the **initial thought of farming** to **profit generation**. We integrate AI, IoT, and data-driven models to optimize every step of the agricultural process.
 
