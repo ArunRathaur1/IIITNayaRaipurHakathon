@@ -146,7 +146,7 @@ router.post("/:id/crop", async (req, res) => {
     let cropData = null;
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/ai/crop_data",
+        "https://iiitnayaraipurhakathon.onrender.com/api/ai/crop_data",
         {
           crop: selectedCrop,
         }
