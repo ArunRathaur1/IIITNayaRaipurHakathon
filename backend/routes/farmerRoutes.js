@@ -102,6 +102,7 @@ router.post("/", async (req, res) => {
         area: newFarmer.area,
         landArea: newFarmer.landArea,
         selectedCrop: newFarmer.selectedCrop,
+        cropData:cropData
         // Not returning password hash for security
       },
     });
