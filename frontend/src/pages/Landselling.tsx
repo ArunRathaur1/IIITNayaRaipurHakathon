@@ -180,9 +180,9 @@ export default function Landselling() {
             </div>
             {/* Listings Table */}
             <div className="overflow-x-auto">
-              <table className="min-w-full border-collapse border border-gray-300">
+              <table className="min-w-full border-collapse border  border-gray-300">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="">
                     <th className="p-2 border">Title</th>
                     <th className="p-2 border">Price</th>
                     <th className="p-2 border">Area</th>
