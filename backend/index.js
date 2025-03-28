@@ -7,6 +7,7 @@ const farmerRoutes = require('./routes/farmerRoutes');
 const sellerRoutes = require('./routes/sellerRoute');
 const landRoutes=require('./routes/landRoutes');
 const airoute=require("./routes/airoutes");
+const paymentRoutes = require('./routes/payment');
 const emailroute=require("./routes/emailRoutes");
 const app = express();
 
@@ -30,6 +31,8 @@ app.use('/api/sellers', sellerRoutes);
 app.use('/api/land',landRoutes);
 app.use("/api/email", emailroute);
 app.use("/api/ai", airoute);
+app.use('/api/payment', paymentRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

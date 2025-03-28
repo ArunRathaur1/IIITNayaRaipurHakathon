@@ -4,6 +4,7 @@ import "./FarmerDetails.css";
 import axios from "axios";
 import Layout from "../components/Layout";
 import { Calendar, Droplets, Sprout } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Farmer {
     _id: string;
@@ -49,6 +50,7 @@ const FarmerDetails: React.FC = () => {
     const [cropInfo, setCropInfo] = useState<CropData | null>(null);
     const [cropLoading, setCropLoading] = useState<boolean>(false);
     const [sendingEmail, setSendingEmail] = useState<boolean>(false);
+    const navigate = useNavigate();
     const handleUpdateCrop = async () => {
       if (!newCrop.trim() || !farmer) return;
       try {
@@ -65,6 +67,7 @@ const FarmerDetails: React.FC = () => {
         fetchCropData(newCrop);
 
         setNewCrop("");
+        navigate(`/updatecrop`);
       } catch (error) {
         console.error("Error updating crop", error);
       } finally {
