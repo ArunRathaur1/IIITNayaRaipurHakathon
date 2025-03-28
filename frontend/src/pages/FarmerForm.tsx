@@ -29,7 +29,7 @@ const FarmerForm: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/farmers",
+        "https://iiitnayaraipurhakathon.onrender.com/api/farmers",
         formData
       );
       alert(response.data.message);
