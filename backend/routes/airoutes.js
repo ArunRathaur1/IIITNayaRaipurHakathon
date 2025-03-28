@@ -3,8 +3,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const router = express.Router();
 
-// Initialize Google Generative AI
-const genAI = new GoogleGenerativeAI("AIzaSyBdJucnG3ujeokv7OzyPT9pRkuSEzs4PQ0");
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENAI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // POST endpoint for AI text generation
