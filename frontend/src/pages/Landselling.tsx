@@ -18,7 +18,7 @@ export default function Landselling() {
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const response = await fetch("https://iiitnayaraipurhakathon.onrender.com/api/land"); // Update with your actual API URL
+        const response = await fetch("http://localhost:5000/api/land"); // Update with your actual API URL
   
         if (!response.ok) {
           throw new Error("Failed to fetch listings");
