@@ -18,7 +18,7 @@ const UpdateCrop: React.FC = () => {
         description: "Pay ₹100 to update crop",
         handler: (response: any) => {
           alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
-          navigate("/"); // ✅ Redirect to home page after payment
+          navigate("/farmerform"); // ✅ Redirect to home page after payment
         }
       };
 
