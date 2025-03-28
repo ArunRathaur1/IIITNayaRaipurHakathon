@@ -76,12 +76,10 @@ const FarmerDetails: React.FC = () => {
     };
     useEffect(() => {
       const fetchFarmer = async () => {
-        console.log(phone)
         try {
           const response = await axios.get(
             `https://iiitnayaraipurhakathon.onrender.com/api/farmers/phone/${phone}`
           );
-          console.log(response);
           setFarmer(response.data);
 
           // If farmer has a selected crop, fetch crop data
@@ -100,7 +98,6 @@ const FarmerDetails: React.FC = () => {
     const fetchCropData = async (data) => {
         setCropLoading(true);
         try {
-          console.log(data);
             if (data.cropData) {
               setCropInfo(data.cropData);
             } else {
