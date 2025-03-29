@@ -1,86 +1,105 @@
-
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Menu, X, Cloud } from 'lucide-react';
-import { useState } from 'react';
+import { Menu, X, Cloud } from "lucide-react";
+import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import image from './logo.png';
+import image from "./logo.png";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
+
+  // Check if the device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkIfMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIfMobile);
+
+    // Clean up
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name:'Token', path:'/tokenform'},
-    { name: 'Price Estimation', path: '/price-estimation' },
-    { name: 'Government Schemes', path: '/government-schemes' },
-    { name: 'Crop Health', path: '/crop-health' },
-    { name: 'Direct Market', path: '/direct-market' },
-    { name: 'Land', path: '/landselling' },
-    { name: 'Weather', path: '/wether', icon: <Cloud className="w-4 h-4 mr-1" /> },
-    { name: 'Login', path: '/farmerform' },
-    {name:"WorkPlace",path:"/workplace"},
+    { name: "Home", path: "/" },
+    { name: "Token", path: "/tokenform" },
+    { name: "Price Estimation", path: "/price-estimation" },
+    { name: "Government Schemes", path: "/government-schemes" },
+    { name: "Crop Health", path: "/crop-health" },
+    { name: "Direct Market", path: "/direct-market" },
+    { name: "Land", path: "/landselling" },
+    {
+      name: "Weather",
+      path: "/wether",
+      icon: <Cloud className="w-4 h-4 mr-1" />,
+    },
+    { name: "Login", path: "/farmerform" },
+    { name: "WorkPlace", path: "/workplace" },
   ];
 
-  const isActive = (path: string) => {
+  const isActive = (path) => {
     return location.pathname === path;
   };
 
   return (
-    <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex h-16 items-center justify-between">
-          <div
-            className="flex items-center"
-            style={{ position: "relative", right: "50px" }}
-          >
+    <nav className="sticky w-full top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border/40">
+      <div className="container mx-auto px-2 sm:px-4">
+        <div className="flex h-14 md:h-16 items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <span className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
-                <img src={image} alt="Description" />{" "}
+              <span className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold overflow-hidden">
+                <img
+                  src={image}
+                  alt="KrishiHub"
+                  className="h-full w-full object-cover"
+                />
               </span>
-              <span className="font-semibold hidden md:inline-block">
+              <span className="font-semibold text-sm md:text-base">
                 KrishiHub
               </span>
             </Link>
           </div>
 
           {/* Desktop Menu */}
-          <div
-            className="hidden md:flex items-center space-x-1"
-            style={{ position: "relative", right: "50px" }}
-          >
+          <div className="hidden md:flex items-center space-x-1 overflow-x-auto max-w-[calc(100vw-200px)]">
             {navLinks.map((link) => (
               <Button
                 key={link.path}
                 variant="ghost"
                 asChild
+                size="sm"
                 className={cn(
-                  "px-4",
+                  "px-2 whitespace-nowrap",
                   isActive(link.path) && "bg-accent text-accent-foreground"
                 )}
               >
-                <Link to={link.path} className="flex items-center">
+                <Link to={link.path} className="flex items-center text-sm">
                   {link.icon && link.icon}
                   {link.name}
                 </Link>
               </Button>
             ))}
-            <div className="ml-2">
-              <ThemeToggle />
-            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center space-x-2">
+          {/* Mobile Menu Button & Theme Toggle */}
+          <div className="flex items-center space-x-1">
             <ThemeToggle />
             <Button
               variant="ghost"
-              size="icon"
+              size="sm"
               onClick={toggleMenu}
-              className="ml-1"
+              className="md:hidden"
+              aria-label="Toggle menu"
             >
               {isOpen ? (
                 <X className="h-5 w-5" />
@@ -92,22 +111,23 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="md:hidden py-4 px-4 bg-background border-b border-border/40 animate-fade-in">
-          <div className="flex flex-col space-y-2">
+        <div className="md:hidden py-2 px-2 bg-background border-b border-border/40 animate-in fade-in slide-in-from-top-5 duration-300 max-h-[70vh] overflow-y-auto">
+          <div className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <Button
                 key={link.path}
                 variant="ghost"
                 asChild
+                size="sm"
                 className={cn(
-                  "justify-start",
+                  "justify-start px-3 py-2 h-auto",
                   isActive(link.path) && "bg-accent text-accent-foreground"
                 )}
                 onClick={() => setIsOpen(false)}
               >
-                <Link to={link.path} className="flex items-center">
+                <Link to={link.path} className="flex items-center text-sm">
                   {link.icon && link.icon}
                   {link.name}
                 </Link>
