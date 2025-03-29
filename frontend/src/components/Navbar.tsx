@@ -32,10 +32,14 @@ const Navbar = () => {
     <nav className="fixed w-full top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+          <div
+            className="flex items-center"
+            style={{ position: "relative", right: "50px" }}
+          >
             <Link to="/" className="flex items-center space-x-2">
               <span className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
-                <img src={image} alt="Description" />              </span>
+                <img src={image} alt="Description" />{" "}
+              </span>
               <span className="font-semibold hidden md:inline-block">
                 KrishiHub
               </span>
@@ -43,7 +47,10 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div
+            className="hidden md:flex items-center space-x-1"
+            style={{ position: "relative", right: "50px" }}
+          >
             {navLinks.map((link) => (
               <Button
                 key={link.path}
