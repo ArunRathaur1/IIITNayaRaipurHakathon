@@ -56,7 +56,7 @@ const FarmerDetails: React.FC = () => {
       try {
         setUpdating(true);
         const response = await axios.post(
-          `http://localhost:5000/api/farmers/${farmer._id}/crop`,
+          `https://iiitnayaraipurhakathon.onrender.com/api/farmers/${farmer._id}/crop`,
           {
             selectedCrop: newCrop,
           }
@@ -79,7 +79,7 @@ const FarmerDetails: React.FC = () => {
         console.log(phone)
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/farmers/phone/${phone}`
+            `https://iiitnayaraipurhakathon.onrender.com/api/farmers/phone/${phone}`
           );
           console.log(response);
           setFarmer(response.data);
@@ -117,7 +117,7 @@ const FarmerDetails: React.FC = () => {
         if (!farmer) return;
         try {
             setSendingEmail(true);
-            await axios.post("http://localhost:5000/api/email/send_email", { farmerId: farmer._id });
+            await axios.post("https://iiitnayaraipurhakathon.onrender.com/api/email/send_email", { farmerId: farmer._id });
             alert("Email sent successfully!");
         } catch (error) {
             console.error("Error sending email", error);

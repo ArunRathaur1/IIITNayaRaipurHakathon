@@ -9,6 +9,7 @@ const landRoutes=require('./routes/landRoutes');
 const airoute=require("./routes/airoutes");
 const paymentRoutes = require('./routes/payment');
 const emailroute=require("./routes/emailRoutes");
+const tokenRoutes=require("./routes/tokenRoutes");
 const app = express();
 
 const mongoURI = process.env.MONGO_URI;
@@ -32,6 +33,7 @@ app.use('/api/land',landRoutes);
 app.use("/api/email", emailroute);
 app.use("/api/ai", airoute);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/tokens', tokenRoutes);
 
 
 const PORT = process.env.PORT || 5000;
