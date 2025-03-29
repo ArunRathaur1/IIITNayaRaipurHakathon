@@ -18,6 +18,8 @@ import FarmerDetails from "./pages/FarmerDetails";
 import Sarthi from "./pages/Sarthi";
 import FloatingChatbot from "./pages/Sarthi";
 import UpdateCrop from "./pages/UpdateCrop";
+import TokenForm from "./pages/TokenForm";
+import TokenAllotment from "./pages/TokenAllotment";
 import Workplace from "./pages/workplace";
 const queryClient = new QueryClient();
 
@@ -38,10 +40,12 @@ const App = () => (
             <Route path="/sellermanagement" element={<SellerManagement />} />
             <Route path="/wether" element={<WeatherDashboard />} />
             <Route path="/farmerform" element={<FarmerForm />} />
+            <Route path="/tokenform" element={<TokenForm />} />
             <Route path="/details/:phone" element={<FarmerDetails />} />
             <Route path="/sarthi" element={<Sarthi />} />
             {/* <Route path="/cropupdate" element={<UpdateCrop cropId={""} updatedCropData={undefined} />} /> */}
             <Route path="/updatecrop" element={<UpdateCrop />}/>
+            <Route path="/allottoken" element={<TokenAllotment />}/>
             <Route path='/workplace' element={<Workplace></Workplace>}></Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
