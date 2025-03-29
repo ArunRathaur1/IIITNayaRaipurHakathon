@@ -2,11 +2,9 @@ const express = require("express");
 const router = express.Router();
 const WorkListing = require("../models/work");
 
-// Create a new work listing
 router.post("/", async (req, res) => {
   try {
     const {
-      id,
       title,
       description,
       payment,
@@ -15,12 +13,9 @@ router.post("/", async (req, res) => {
       category,
       requirements,
       contactInfo,
-      createdAt,
     } = req.body;
 
-
     const newWorkListing = new WorkListing({
-      id,
       title,
       description,
       payment,
@@ -29,16 +24,16 @@ router.post("/", async (req, res) => {
       category,
       requirements,
       contactInfo,
-      createdAt,
     });
 
     const savedListing = await newWorkListing.save();
     res.status(201).json(savedListing);
   } catch (error) {
     console.error("Error creating work listing:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 // Get all work listings sorted by creation date (latest first)
 router.get("/", async (req, res) => {

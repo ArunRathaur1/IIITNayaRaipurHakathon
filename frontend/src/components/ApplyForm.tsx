@@ -25,6 +25,7 @@ export default function ApplyForm() {
     setFormMessage({ type: "", text: "" });
 
     try {
+      console.log(formData)
       const response = await fetch(
         "https://iiitnayaraipurhakathon.onrender.com/api/work/",
         {
