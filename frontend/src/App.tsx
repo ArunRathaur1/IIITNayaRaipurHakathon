@@ -18,6 +18,7 @@ import FarmerDetails from "./pages/FarmerDetails";
 import Sarthi from "./pages/Sarthi";
 import FloatingChatbot from "./pages/Sarthi";
 import UpdateCrop from "./pages/UpdateCrop";
+import Workplace from "./pages/workplace";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/sarthi" element={<Sarthi />} />
             {/* <Route path="/cropupdate" element={<UpdateCrop cropId={""} updatedCropData={undefined} />} /> */}
             <Route path="/updatecrop" element={<UpdateCrop />}/>
+            <Route path='/workplace' element={<Workplace></Workplace>}></Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

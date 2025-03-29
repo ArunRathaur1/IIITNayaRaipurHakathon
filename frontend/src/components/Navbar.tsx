@@ -21,6 +21,7 @@ const Navbar = () => {
     { name: 'Land', path: '/landselling' },
     { name: 'Weather', path: '/wether', icon: <Cloud className="w-4 h-4 mr-1" /> },
     { name: 'Login', path: '/farmerform' },
+    {name:"WorkPlace",path:"/workplace"},
   ];
 
   const isActive = (path: string) => {
