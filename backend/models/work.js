@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const workListingSchema = new mongoose.Schema(
   {
-    id: { type: String,  unique: true }, // Unique identifier for the work listing
+    id: { type: String }, // Unique identifier for the work listing
     title: { type: String,  }, // Title of the work
     description: { type: String,  }, // Description of the work
     payment: { type: Number,  }, // Payment for the work
