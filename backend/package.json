@@ -21,6 +21,7 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.10.0",
     "razorpay": "^2.9.6",
-    "serialport": "^13.0.0"
+    "serialport": "^13.0.0",
+    "together-ai": "^0.16.0"
   }
 }

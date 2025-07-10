@@ -27,7 +27,7 @@ export default function ApplyForm() {
     try {
       console.log(formData)
       const response = await fetch(
-        "https://iiitnayaraipurhakathon.onrender.com/api/work/",
+        "http://localhost:10000/api/work/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

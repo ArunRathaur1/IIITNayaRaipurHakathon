@@ -7,7 +7,7 @@ export default function ShowData() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("https://iiitnayaraipurhakathon.onrender.com/api/work/")
+    fetch("http://localhost:10000/api/work/")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

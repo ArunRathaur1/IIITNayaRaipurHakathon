@@ -89,7 +89,7 @@ const HeroSection = () => {
                 <div className="space-y-4">
                   <div className="w-full h-32 bg-agri-green/10 rounded-lg flex items-center justify-center">
                     <img
-                      src="https://www.researchgate.net/publication/384359907/figure/fig1/AS:11431281280471750@1727377705133/The-proposed-abnormal-price-detection-system-estimates-price-distribution-considering.tif"
+                      src="https://imgs.search.brave.com/zB5zGa56yhIbbCTtRKuHztwSeuDmZiBlQMaMxOCp3To/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9lb3Mu/Y29tL3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDIwLzA1L2Nyb3Bz/LXdpZGdldC1zY2Fs/ZWQuanBn"
                       alt="Crop Analysis"
                       // className="w-24 h-24 rounded-full object-cover"
                     />

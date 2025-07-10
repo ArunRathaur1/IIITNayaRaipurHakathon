@@ -1,10 +1,10 @@
 const express = require("express");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const Together =require("together-ai"); // ES Module import
 
 const router = express.Router();
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENAI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+// Initialize Together AI with environment variable
+const together = new Together(); // uses TOGETHER_API_KEY from .env
 
 // POST endpoint for AI text generation
 router.post("/chatboat", async (req, res) => {
@@ -15,10 +15,18 @@ router.post("/chatboat", async (req, res) => {
       return res.status(400).json({ error: "Prompt is required" });
     }
 
-    const result = await model.generateContent(prompt);
-    const response = result.response.text();
+    const response = await together.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      model: "deepseek-ai/DeepSeek-V3",
+    });
 
-    res.json({ success: true, data: response });
+    const result = response.choices[0].message.content;
+    res.json({ success: true, data: result });
   } catch (error) {
     console.error("Error generating AI response:", error);
     res.status(500).json({
@@ -27,7 +35,8 @@ router.post("/chatboat", async (req, res) => {
     });
   }
 });
-// POST endpoint for AI text generation
+
+// POST endpoint for estimate
 router.post("/estimate", async (req, res) => {
   try {
     const { data } = req.body;
@@ -36,7 +45,6 @@ router.post("/estimate", async (req, res) => {
       return res.status(400).json({ error: "Data is required" });
     }
 
-    // Constructing a prompt for AI
     const prompt = `
       Estimate yield and suggestions based on the following details.
       Return only valid JSON format without markdown or explanations.
@@ -61,15 +69,22 @@ router.post("/estimate", async (req, res) => {
       - Additional Info: ${data.additionalInfo}
     `;
 
-    const result = await model.generateContent(prompt);
-    let response = result.response.text();
+    const response = await together.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      model: "deepseek-ai/DeepSeek-V3",
+    });
 
-    // **Step 1: Remove AI Markdown Formatting (```json ... ```)**
-    response = response.replace(/```json|```/g, "").trim();
+    let result = response.choices[0].message.content;
 
-    // **Step 2: Parse AI Response into JSON**
+    result = result.replace(/```json|```/g, "").trim();
+
     try {
-      response = JSON.parse(response);
+      result = JSON.parse(result);
     } catch (error) {
       console.error("Error parsing AI response:", error);
       return res.status(500).json({
@@ -79,8 +94,7 @@ router.post("/estimate", async (req, res) => {
       });
     }
 
-    // **Step 3: Send JSON Response**
-    res.json({ success: true, data: response });
+    res.json({ success: true, data: result });
   } catch (error) {
     console.error("Error generating AI response:", error);
     res.status(500).json({
@@ -90,6 +104,7 @@ router.post("/estimate", async (req, res) => {
   }
 });
 
+// POST endpoint for crop data
 router.post("/crop_data", async (req, res) => {
   try {
     const { crop } = req.body;
@@ -98,7 +113,6 @@ router.post("/crop_data", async (req, res) => {
       return res.status(400).json({ error: "Crop name is required" });
     }
 
-    // Constructing a prompt for AI
     const prompt = `
       Provide agricultural data for the crop: ${crop}.
       Return only valid JSON format without markdown or explanations.
@@ -117,15 +131,22 @@ router.post("/crop_data", async (req, res) => {
       }
     `;
 
-    const result = await model.generateContent(prompt);
-    let response = result.response.text();
+    const response = await together.chat.completions.create({
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      model: "deepseek-ai/DeepSeek-V3",
+    });
 
-    // **Step 1: Remove AI Markdown Formatting (```json ... ```)**
-    response = response.replace(/```json|```/g, "").trim();
+    let result = response.choices[0].message.content;
 
-    // **Step 2: Parse AI Response into JSON**
+    result = result.replace(/```json|```/g, "").trim();
+
     try {
-      response = JSON.parse(response);
+      result = JSON.parse(result);
     } catch (error) {
       console.error("Error parsing AI response:", error);
       return res.status(500).json({
@@ -135,8 +156,7 @@ router.post("/crop_data", async (req, res) => {
       });
     }
 
-    // **Step 3: Send JSON Response**
-    res.json({ success: true, data: response });
+    res.json({ success: true, data: result });
   } catch (error) {
     console.error("Error generating crop data:", error);
     res.status(500).json({
@@ -145,9 +165,5 @@ router.post("/crop_data", async (req, res) => {
     });
   }
 });
-
-
-
-
 
 module.exports = router;

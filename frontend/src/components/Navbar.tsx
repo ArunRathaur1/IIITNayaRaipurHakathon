@@ -37,6 +37,7 @@ const Navbar = () => {
     { name: "Crop Health", path: "/crop-health" },
     { name: "Direct Market", path: "/direct-market" },
     { name: "Land", path: "/landselling" },
+    { name: "Prices", path: "/prices" },
     {
       name: "Weather",
       path: "/wether",
@@ -65,7 +66,7 @@ const Navbar = () => {
                 />
               </span>
               <span className="font-semibold text-sm md:text-base">
-                KrishiHub
+                Project Kisan
               </span>
             </Link>
           </div>
