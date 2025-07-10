@@ -7,7 +7,7 @@ export default function ShowData() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:10000/api/work/")
+    fetch("https://iiit-naya-raipur-hakathon.vercel.app/api/work/")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

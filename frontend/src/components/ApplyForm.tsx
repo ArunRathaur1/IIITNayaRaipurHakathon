@@ -27,7 +27,7 @@ export default function ApplyForm() {
     try {
       console.log(formData)
       const response = await fetch(
-        "http://localhost:10000/api/work/",
+        "https://iiit-naya-raipur-hakathon.vercel.app/api/work/",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

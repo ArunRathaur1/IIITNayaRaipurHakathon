@@ -48,7 +48,7 @@ export default function MapView({ listings: propListings, activeTab }: MapViewPr
       try {
         setIsLoading(true);
         // First try to get listings from the API
-        const response = await fetch("http://localhost:10000/api/land/", {
+        const response = await fetch("https://iiit-naya-raipur-hakathon.vercel.app/api/land/", {
           signal: AbortSignal.timeout(3000) // Timeout after 3 seconds
         });
 

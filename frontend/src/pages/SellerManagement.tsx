@@ -47,7 +47,7 @@ const SellerManagement: React.FC = () => {
 
   const addSeller = async () => {
     try {
-      await axios.post('http://localhost:10000/api/sellers/add', formData);
+      await axios.post('https://iiit-naya-raipur-hakathon.vercel.app/api/sellers/add', formData);
       fetchSellers();
       setAlertMessage('Seller successfully added!');
       setTimeout(() => setAlertMessage(null), 3000);

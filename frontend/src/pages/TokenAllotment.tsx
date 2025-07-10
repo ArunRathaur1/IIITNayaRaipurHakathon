@@ -21,7 +21,7 @@ const TokenAllotment: React.FC = () => {
     }
   
     try {
-      await axios.put("http://localhost:10000/api/tokens/update", {
+      await axios.put("https://iiit-naya-raipur-hakathon.vercel.app/api/tokens/update", {
         phone,
         allottedDate,  // Ensure this matches backend field "Alloteddate"
       });
