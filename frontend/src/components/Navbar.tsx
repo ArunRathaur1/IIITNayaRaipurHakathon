@@ -23,9 +23,13 @@ const Navbar = () => {
     // Add event listener for window resize
     window.addEventListener("resize", checkIfMobile);
 
-    // Clean up
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
+
+  // Lock scroll on mobile when menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
+  }, [isOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -92,7 +96,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Mobile Menu Button & Theme Toggle */}
+          {/* Mobile Menu Toggle & Theme Switch */}
           <div className="flex items-center space-x-1">
             <ThemeToggle />
             <Button
@@ -102,11 +106,7 @@ const Navbar = () => {
               className="md:hidden"
               aria-label="Toggle menu"
             >
-              {isOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
@@ -117,22 +117,18 @@ const Navbar = () => {
         <div className="md:hidden py-2 px-2 bg-background border-b border-border/40 animate-in fade-in slide-in-from-top-5 duration-300 max-h-[70vh] overflow-y-auto">
           <div className="flex flex-col space-y-1">
             {navLinks.map((link) => (
-              <Button
+              <Link
                 key={link.path}
-                variant="ghost"
-                asChild
-                size="sm"
+                to={link.path}
+                onClick={() => setIsOpen(false)}
                 className={cn(
-                  "justify-start px-3 py-2 h-auto",
+                  "flex items-center gap-2 px-4 py-3 text-sm rounded-md hover:bg-accent transition-all duration-150",
                   isActive(link.path) && "bg-accent text-accent-foreground"
                 )}
-                onClick={() => setIsOpen(false)}
               >
-                <Link to={link.path} className="flex items-center text-sm">
-                  {link.icon && link.icon}
-                  {link.name}
-                </Link>
-              </Button>
+                {link.icon && link.icon}
+                {link.name}
+              </Link>
             ))}
           </div>
         </div>
